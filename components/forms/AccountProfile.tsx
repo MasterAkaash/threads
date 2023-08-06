@@ -1,5 +1,6 @@
 "use client";
 
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,7 +14,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
 import * as z from "zod";
@@ -37,17 +37,18 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
-      profile_photo: "",
-      name: "",
-      username: "",
-      bio: "",
+
+      profile_photo: user?.image || "",
+      name: user?.name || "",
+      username: user?.username || "",
+      bio: user?.bio || "",
     },
   });
 
   const handleImage = (
     e: ChangeEvent,
     fieldChange: (value: string) => void
-  ) => {
+    ) => {
     e.preventDefault();
   };
 
@@ -109,7 +110,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3 w-full">
+            <FormItem className="flex gap-4 flex-col w-full">
               <FormLabel className="text-base-semibold text-light-2">
                 Name
               </FormLabel>
@@ -131,7 +132,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3 w-full">
+            <FormItem className="flex gap-4 flex-col w-full">
               <FormLabel className="text-base-semibold text-light-2">
                 Username
               </FormLabel>
@@ -153,20 +154,18 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
             control={form.control}
             name="bio"
             render={({ field }) => (
-            <FormItem className="flex items-center gap-3 w-full">
+            <FormItem className="flex gap-4 flex-col w-full">
                 <FormLabel className="text-base-semibold text-light-2">
                     Bio
                 </FormLabel>
 
-                <Textarea 
-                    rows={10}
-                    className=" flex-1 text-base-semibold text-gray-200">
-                    <Input
-                        type="text"
+                <FormControl className="flex-1 text-base-semibold text-gray-200">
+                    <Textarea
+                        rows={10}
                         className="account-form_input no-focus"
                         {...field}
                     />
-                </Textarea>
+                </FormControl>
             </FormItem>
         )}/>
 
